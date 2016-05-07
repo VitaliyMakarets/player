@@ -11,9 +11,6 @@ var muteButton = document.querySelector('#mute')
 var player = new Player()
 
 playButton.addEventListener('click', () => {
-  if (player.currentSong) {
-    console.log('playing' + currentSong.name)
-  }
   player.playLast()
 })
 nextButton.addEventListener('click', () => {
