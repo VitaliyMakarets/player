@@ -27,6 +27,7 @@ export default class Player extends EventEmitter {
     this.paused = false
     this.options = []
     this._list = []
+    this._currentSong = null
   }
 
   get list() {
@@ -41,6 +42,14 @@ export default class Player extends EventEmitter {
       return null
 
     return this._list[this.history[this.history.length - 1]]
+  }
+
+  get currentSong() {
+    return this._currentSong
+  }
+
+  get currentSongId() {
+    return this.currentSong ? this.currentSong._id : null
   }
 
   get volumeLevel() {
@@ -59,7 +68,7 @@ export default class Player extends EventEmitter {
     if (this._list.length <= 0)
       return
 
-    if (this.playing)
+    if (this.currentSong)
       this.stop()
 
     if (!_.isNumber(index))
@@ -101,6 +110,10 @@ export default class Player extends EventEmitter {
           'readableStream': this,
           'Speaker': speaker,
         }
+
+        self._currentSong = song
+
+        console.log('player set current song to: ', self.currentSong)
 
         self.emit('playing', song)
         self.history.push(index)
@@ -169,6 +182,7 @@ export default class Player extends EventEmitter {
     this.volume.end()
 
     this.speaker.Speaker.close()
+    this._currentSong = null
     return
   }
 
@@ -212,6 +226,8 @@ export default class Player extends EventEmitter {
     }
 
     this._list.push(latest)
+
+    this.emit('track:added', latest)
   }
 
   /**
