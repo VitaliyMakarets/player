@@ -12,7 +12,7 @@ let mainWindow
 
 function createWindow () {
   mainWindow = new BrowserWindow({width: 1300, height: 1000})
-  mainWindow.loadURL('file://' + __dirname + '/src/index.html')
+  mainWindow.loadURL('file://' + __dirname + '/dist/index.html')
   mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
