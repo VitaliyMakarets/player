@@ -1,6 +1,6 @@
 {
   "name": "player",
-  "version": "0.1",
+  "version": "1.0.0",
   "description": "simple player with scrobbling",
   "main": "main.js",
   "scripts": {
