@@ -4,7 +4,7 @@ var playButton = document.querySelector('#play')
 var nextButton = document.querySelector('#next')
 var pauseButton = document.querySelector('#pause')
 var stopButton = document.querySelector('#stop')
-var inputFile = document.querySelector('#file')
+var addFile = document.querySelector('#file')
 var trackTitle = document.querySelector('#trackTitle')
 var muteButton = document.querySelector('#mute')
 
@@ -39,15 +39,16 @@ muteButton.addEventListener('click', () => {
   else
     player.setVolume(prevLevel || 0.5)
 })
-inputFile.addEventListener('change', () => {
-  if (inputFile.files.length > 0) {
-    currentFile = inputFile.files[0]
+
+addFile.addEventListener('change', () => {
+  if (addFile.files.length > 0) {
+    currentFile = addFile.files[0]
     player.add(currentFile)
     if (!player.playing)
       player.play()
     renderList(player.list)
     trackTitle.innerHTML = currentFile.name
-    info(inputFile)
+    info(addFile)
   }
 })
 
