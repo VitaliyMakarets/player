@@ -42,12 +42,13 @@ addFile.addEventListener('change', () => {
     player.add(newFile)
     if (!player.currentSong)
       player.play()
-    renderList(player.list)
-    trackTitle.innerHTML = player.currentSong.name
   }
 })
 
-player.on('playing', () => renderList(player.list))
+player.on('playing', (song) => {
+  trackTitle.innerHTML = song.name
+  renderList(player.list)
+})
 player.on('track:added', () => renderList(player.list))
 
 var listEl = document.querySelector('#list')
