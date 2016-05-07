@@ -4,14 +4,11 @@
   "description": "simple player with scrobbling",
   "main": "main.js",
   "scripts": {
-    "build:assets": "cp app/index.html src/index.html & cp app/styles.css src/styles.css",
-    "build:js":"node_modules/.bin/babel app --out-dir src --source-maps",
-    "build:electron": "npm run build:assets | npm run build:js",
-    "prestart": "npm run build:electron",
-    "start": "electron main.js",
-
-    "build": "node_modules/.bin/babel libs --out-dir dist --source-maps",
-    "build-watch": "node_modules/.bin/babel libs --out-dir dist --source-maps --watch"
+    "build:assets": "cp app/index.html dist/index.html & cp app/styles.css dist/styles.css",
+    "build:js":"node_modules/.bin/babel app --out-dir dist --source-maps",
+    "build": "npm run build:assets | npm run build:js",
+    "prestart": "npm run build",
+    "start": "electron main.js"
   },
   "repository": {
     "type": "git",
