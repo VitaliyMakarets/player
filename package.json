@@ -6,8 +6,9 @@
   "scripts": {
     "build:assets": "cp app/index.html dist/index.html & cp app/styles.css dist/styles.css",
     "build:js":"node_modules/.bin/babel app --out-dir dist --source-maps",
+    "build:js-watch":"node_modules/.bin/babel app --out-dir dist --source-maps --watch",
     "build": "npm run build:assets | npm run build:js",
-    "prestart": "npm run build",
+    "build:watch": "npm run build:assets | npm run build:js-watch",
     "start": "electron main.js"
   },
   "repository": {
