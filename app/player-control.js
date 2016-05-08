@@ -50,6 +50,7 @@ player.on('playing', (song) => {
   renderList(player.list)
 })
 player.on('track:added', () => renderList(player.list))
+player.on('track:ended', () => renderList(player.list))
 
 var listEl = document.querySelector('#list')
 
