@@ -52,6 +52,13 @@ export default class Player extends EventEmitter {
     return this.currentSong ? this.currentSong._id : null
   }
 
+  get nextSong() {
+    let found = this._list.filter((song) => song._id == playing._id)
+    if (found.length > 0)
+      return found[0]
+    return
+  }
+
   get volumeLevel() {
     return this.volume ? this.volume.volume : 0
   }
@@ -96,32 +103,27 @@ export default class Player extends EventEmitter {
       pool
         .pipe(this.lameStream)
         .once('format', onPlaying)
-        .once('finish', () => this.next())
+        .once('finish', () => {
+          self.emit('track:ended', song)
+          if (self.nextSong)
+            self.next()
+        })
 
       function onPlaying(f) {
         self.lameFormat = f
-        var volume = new Volume()
-        var speaker = new Speaker(self.lameFormat)
-        self.speaker = speaker
-        volume.pipe(speaker)
-
-        self.volume = volume
-        self.speaker = {
-          'readableStream': this,
-          'Speaker': speaker,
-        }
+        self.volume = new Volume()
+        self.speaker = new Speaker(self.lameFormat)
+        self._readableStream = this
+        self.volume.pipe(self.speaker)
 
         self._currentSong = song
-
-        console.log('player set current song to: ', self.currentSong)
-
         self.emit('playing', song)
         self.history.push(index)
 
         // This is where the song actually played end,
         // can't trigger playend event here cause
         // unpipe will fire this speaker's close event.
-        this.pipe(volume)
+        this.pipe(self.volume)
           .once('close', () =>
             self.emit('playend', song))
       }
@@ -160,15 +162,15 @@ export default class Player extends EventEmitter {
 
   pause() {
     if (this.paused) {
+      this.emit('unpause', this._currentSong)
       this.volume = new Volume()
-      let newSpeaker = new Speaker(this.lameFormat)
-      this.speaker.Speaker = newSpeaker
-      this.volume.pipe(newSpeaker)
-      this.lameStream.pipe(newSpeaker)
-
+      this.speaker = new Speaker(this.lameFormat)
+      this.volume.pipe(this.speaker)
+      this.lameStream.pipe(this.speaker)
     } else {
       this.volume.end()
-      //this.speaker.Speaker.close() // not pausing but just stops playback
+      this.emit('pause', this._currentSong)
+      //this.speaker.close() // not pausing but just stops playback
     }
 
     this.paused = !this.paused
@@ -178,19 +180,16 @@ export default class Player extends EventEmitter {
   stop() {
     if (!this.volume)
       return
-    this.speaker.readableStream.unpipe()
+    this._readableStream.unpipe()
     this.volume.end()
 
-    this.speaker.Speaker.close()
+    this.speaker.close()
+    let song = this._currentSong
     this._currentSong = null
+    this.emit('track:ended', song)
     return
   }
 
-  /**
-   * [Stop playing and switch to next song,
-   * if there is no next song, trigger a `No next song` error event]
-   * @return {player} this
-   */
   next() {
     let list = this._list
     let current = this.playing
