@@ -53,7 +53,7 @@ export default class Player extends EventEmitter {
   }
 
   get nextSong() {
-    let found = this._list.filter((song) => song._id == playing._id)
+    let found = this._list.filter((song) => song._id == this.playing._id)
     if (found.length > 0)
       return found[0]
     return
