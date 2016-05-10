@@ -4,7 +4,7 @@ import util from "util"
 import { http, https } from 'follow-redirects'
 import home from 'home'
 import lame from 'lame'
-import _ from 'underscore'
+import _ from 'lodash'
 import Speaker from 'speaker'
 import PoolStream from 'pool_stream'
 import Volume from 'pcm-volume'
