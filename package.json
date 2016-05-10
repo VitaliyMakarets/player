@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "build:assets": "cp app/index.html dist/index.html & cp app/styles.css dist/styles.css",
-    "build:js":"node_modules/.bin/babel app --out-dir dist --source-maps",
-    "build:js-watch":"node_modules/.bin/babel app --out-dir dist --source-maps --watch",
+    "build:js": "node_modules/.bin/babel app --out-dir dist --source-maps",
+    "build:js-watch": "node_modules/.bin/babel app --out-dir dist --source-maps --watch",
     "build": "npm run build:assets | npm run build:js",
     "build:watch": "npm run build:assets | npm run build:js-watch",
     "start": "electron main.js"
@@ -37,7 +37,8 @@
     "pcm-volume": "^1.0.0",
     "pool_stream": "0.0.2",
     "speaker": "^0.2.6",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "wavesurfer.js": "^1.1.1"
   },
   "devDependencies": {
     "babel": "^5.2.17",

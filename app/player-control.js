@@ -1,4 +1,5 @@
 import Player from './player'
+import WaveSurfer from 'wavesurfer.js'
 
 var playButton = document.querySelector('#play')
 var nextButton = document.querySelector('#next')
@@ -40,17 +41,35 @@ addFile.addEventListener('change', () => {
   if (addFile.files.length > 0) {
     var newFile = addFile.files[0]
     player.add(newFile)
-    if (!player.currentSong)
+    if (!player.currentSong) {
       player.play()
+      player.stop()
+    }
   }
 })
 
+//player.js add trackChange event
+var wavesurfer = WaveSurfer.create({
+    container: '#waves',
+    autoCenter: true,
+    progressColor: '#45b8de',
+    waveColor: '#000',
+    cursorColor: '#333',
+    maxCanvasWidth: 800,
+})
 player.on('playing', (song) => {
+  if (player.currentSong) {
+    wavesurfer.load(player.currentSong.path);
+    //wavesurfer.play()
+  }
   trackTitle.innerHTML = song.name
+
   renderList(player.list)
 })
 player.on('track:added', () => renderList(player.list))
 player.on('track:ended', () => renderList(player.list))
+
+//wavesurfer.load('../audio/song.mp3');
 
 var listEl = document.querySelector('#list')
 
