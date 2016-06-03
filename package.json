@@ -37,6 +37,7 @@
     "lodash": "^4.12.0",
     "pcm-volume": "^1.0.0",
     "pool_stream": "0.0.2",
+    "rc": "^1.1.6",
     "speaker": "^0.2.6",
     "wavesurfer.js": "^1.1.1"
   },
